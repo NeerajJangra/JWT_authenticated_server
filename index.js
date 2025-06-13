@@ -4,6 +4,7 @@ import mongoose from "mongoose"
 import AuthRouter from "./routes/authRoutes.js"
 import { protect } from "./middlewares/authMiddleware.js"
 import { RateLimiter } from "./middlewares/rateLimiter.js"
+import helmet from "helmet"
 
 const app = express()
 dotenv.config()
@@ -21,6 +22,8 @@ app.use(express.json())
 app.use(RateLimiter(100))
 app.use('/api/auth/login',RateLimiter(5))
 app.use('/api/auth', AuthRouter)
+app.use(helmet())
+app.disable('x-powered-by')
 
 
 app.get('/api/tasks/protected', protect, (req,res)=> {

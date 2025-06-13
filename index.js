@@ -18,7 +18,8 @@ mongoose.connect(process.env.MONGODB_URL)
 const PORT = process.env.PORT
 app.use(express.json())
 
-app.use(RateLimiter)
+app.use(RateLimiter(100))
+app.use('/api/auth/login',RateLimiter(5))
 app.use('/api/auth', AuthRouter)
 
 
